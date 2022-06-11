@@ -1,5 +1,5 @@
 ## estimate missing abundance in 2020,
-## fit Bayesian model, 
+## fit Bayesian regression model, 
 ## and forecast 2022 value
 
 library(tidyverse)
@@ -66,7 +66,7 @@ dat <- abundance %>%
 # examine correlations!
 cor(dat[,-1], use = "p")
 
-imp <- mice(data = dat, method = "norm", m = 100)
+imp <- mice(data = dat, method = "norm", m = 100, seed = 957)
 
 # pull out 2020 estimates
 estimated_2020 <- NA
@@ -130,6 +130,7 @@ form <- bf(log_abundance_lead1 ~ log_abundance + s(trend))
 ## fit
 mice_brm <- brm_multiple(form,
               data = imputed.data,
+              seed = 992,
               cores = 4, chains = 4, iter = 3000,
               save_pars = save_pars(all = TRUE),
               control = list(adapt_delta = 0.99999999, max_treedepth = 12))
@@ -142,9 +143,9 @@ summary(mice_brm)
 mice_brm <- readRDS("./output/mice_brm.rds")
 check_hmc_diagnostics(mice_brm$fit)
 neff_lowest(mice_brm$fit)
-rhat_highest(mice_brm$fit)
 
-bayes_R2(mice_brm)
+
+bayes_R2(mice_brm) # this only fits for the first model
 
 plot(conditional_effects(mice_brm), ask = FALSE)
 
@@ -220,6 +221,9 @@ UCI.80 / overall.mean
 
 LCI.95 / overall.mean
 UCI.95 / overall.mean
+
+# probability of greater value in 2022 than 2021
+sum(pred.2022 > abundance$log_abundance[abundance$year == 2021]) / length(pred.2022)
 
 # add blank year to abundance.plot
 xtra.80 <- data.frame(year = 2022,
