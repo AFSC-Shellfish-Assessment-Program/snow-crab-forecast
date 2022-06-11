@@ -196,7 +196,7 @@ g1 <- ggplot(dat_ce) +
 
 print(g1)
 
-ggsave("./Figs/mice_borealization_abundance_regression.png", width = 6, height = 4, units = 'in')
+ggsave("./Figs/mice_borealization_abundance_regression.png", width = 4, height = 3, units = 'in')
 
 
 # now predict for 2022 survey
