@@ -64,6 +64,6 @@ Actual results from the 2022 survey will be published when they are available. T
 \newpage
 ## Forecast transparency
 
-Data and code for reproducing this forecast are publicly available in the "snow-crab-forecast" repository that was published in the Zenodo archive on ___ (\textcolor{blue}{}). The repository is also available on Github (\textcolor{blue}{https://github.com/AFSC-Shellfish-Assessment-Program/snow-crab-forecast}).
+Data and code for reproducing this forecast are publicly available in the "snow-crab-forecast" repository that was published in the Zenodo archive on June 11, 2022 (\textcolor{blue}{https://doi.org/10.5281/zenodo.6634812}). The repository is also available on Github (\textcolor{blue}{https://github.com/AFSC-Shellfish-Assessment-Program/snow-crab-forecast}).
 
 If you find any errors, or have any questions, contact mike.litzow@noaa.gov. The forecast model has not yet been peer reviewed.  
