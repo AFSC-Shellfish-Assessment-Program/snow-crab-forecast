@@ -231,11 +231,11 @@ trend.plot <- ggplot(trend, aes(t, estimate)) +
   theme_bw() +
   geom_line(color=cb[2]) +
   geom_hline(yintercept = 0) +
-  geom_ribbon(aes(x=t, ymin=conf.low, ymax=conf.high), linetype=2, alpha=0.1, fill=cb[2]) + xlab("") + ylab("Trend")
+  geom_ribbon(aes(x=t, ymin=conf.low, ymax=conf.high), linetype=2, alpha=0.1, fill=cb[2]) + xlab("") + ylab("Borealization index")
 
 
 # save
-png("./Figs/borealization_DFA_loadings_trend.png", width = 9, height = 3.5, units = 'in', res = 300)
+png("./Figs/borealization_DFA_loadings_trend.png", width = 7, height = 3, units = 'in', res = 300)
 
 ggpubr::ggarrange(loadings.plot,
                   trend.plot,
