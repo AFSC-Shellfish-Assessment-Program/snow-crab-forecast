@@ -25,11 +25,20 @@ trend <- trend %>%
 
 abundance <- read.csv("./Data/imm_abun.csv", row.names = 1)
 
+# get actual 2022 value to plot on top of forecast value
+actual_2022 <- log(abundance$ABUNDANCE[abundance$YEAR==2022])
+
+# remove 2022 to repeat original pre-survey forecast with correct units
+# (log crab instead of log millions of crab)
+abundance <- abundance %>%
+  filter(YEAR < 2022)
+
+
 # clean up and combine
 
 abundance <- abundance %>%
-  rename(year = AKFIN_SURVEY_YEAR) %>%
-  mutate(log_abundance = log(ABUNDANCE_MIL), .keep = "unused")
+  rename(year = YEAR) %>%
+  mutate(log_abundance = log(ABUNDANCE), .keep = "unused")
 
 dat <- left_join(trend, abundance)
 
@@ -235,9 +244,18 @@ xtra.80 <- data.frame(year = 2022,
 
 # create data frame for 95% CI
 xtra.95 <- data.frame(year = 2022,
-                      log_abundance = 5.5, # dummy value to make plot work
+                      log_abundance = 21, # dummy value to make plot work
                       LCI = quantile(pred.2022, 0.025),
                       UCI = quantile(pred.2022, 0.975))
+
+# and add actual 2022 value to compare with forecast
+actual <- data.frame(year = 2022,
+                     log_abundance = actual_2022,
+                     LCI = NA,
+                     UCI = NA)
+                     
+abundance.plot <- rbind(abundance.plot, actual)
+
 
 ggplot(abundance.plot, aes(year, log_abundance)) +
   geom_line() +
@@ -245,9 +263,10 @@ ggplot(abundance.plot, aes(year, log_abundance)) +
   geom_point(size = 2) +
   geom_errorbar(data = xtra.95, aes(x = year, ymin = LCI, ymax = UCI), color = "gold") +
   geom_errorbar(data = xtra.80, aes(x = year, ymin = LCI, ymax = UCI), color = "firebrick") +
-
+  ylim(18.75, 23) +
   ylab("Log abundance") +
   theme(axis.title.x = element_blank())
 
 # save plot
-ggsave("./Figs/imputed_and_predicted_survey_abundance.png", width = 5, height = 3, units = 'in')
+# ggsave("./Figs/imputed_and_predicted_survey_abundance.png", width = 5, height = 3, units = 'in')
+ggsave("./Figs/imputed_and_predicted_survey_abundance_with_actual_2022.png", width = 5, height = 3, units = 'in')
